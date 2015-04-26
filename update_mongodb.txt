@@ -1,0 +1,10 @@
+#As checked within the audit.py process, there are several correct formated postcodes, but one. Somewhere in the data, the postcode is set to "Ohio", which is obviously not a postcode. 
+# The error can be examined at the document level in the mongo database collection. 
+# To do that the following query was used to find the document in the "cleveland" collection
+
+db.cleveland.find( { "address.postcode": "Ohio" } )
+
+#The object of the document is a school called "Seton Catholic School". Searching that school in Google https://www.google.de/search?q=Seton+Catholic+School+ohio led to the assumption, that the correct postcode is "44236".
+#To correct the postcode of the document with the the following query was used: 
+
+db.cleveland.update( { _id:ObjectId("551bf2c7fa9086fb4cdca52f") }, {$set:{"address.postcode":"44236"}})
